@@ -29,20 +29,21 @@ namespace entityDBtest
         List<Currency> CurrenciesList = new List<Currency>();
 
         public static List<JToken> currencies = new List<JToken>();
-        public string CurrentDate;
-        //public Date CurrentDate = new Date();
+        //public string CurrentDate;
+        public DateString CurrentDate = new DateString();
         public async Task LoadCurrencies()
         {
             currencies.Clear();
             HttpClient client = new HttpClient();
 
-            string url = "http://data.fixer.io/api/latest?access_key=a811a7a4f347a1c280eaf781ed121ccb";
+            string url = "http://data.fixer.io/api/2018-02-25?access_key=a811a7a4f347a1c280eaf781ed121ccb";
             var response = await client.GetAsync(string.Format(url));
 
             string result = await response.Content.ReadAsStringAsync();
 
             JObject data = JObject.Parse(result);
-            CurrentDate = data["date"].ToString();
+            //CurrentDate = data["date"].ToString();
+            CurrentDate.Date = data["date"].ToString();
 
             foreach (var i in data["rates"])
             {
@@ -55,7 +56,7 @@ namespace entityDBtest
             {
                 Currency aCurrency = new Currency()
                 {
-                    Date = CurrentDate,
+                    UpdateDate = CurrentDate,
                     CurrencyCode = entry.Name,
                     Rate = entry.Value.ToString()
                 };
@@ -66,6 +67,7 @@ namespace entityDBtest
         {
             await using (var context = new CurrencyContext())
             {
+                context.DateString.Add(CurrentDate);
                 foreach (var i in CurrenciesList)
                 {
                     context.Currency.Add(i);
@@ -76,30 +78,31 @@ namespace entityDBtest
     }
     public class CurrencyContext : DbContext
     {
+        public DbSet<DateString> DateString { get; set; }
         public DbSet<Currency> Currency { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=localhost;Database=CurrencyDB;Trusted_Connection=True;");
         }
     }
-    /*public class Date
+   public class DateString
     {
         [Key]
-        public string date;
-    }
-    [Keyless]*/
+        public string Date { get; set; }
+        
+    }    
     public class Currency
     {
         [Key]
-        public int Id { get; set; }
-        public string Date { get; set; }
+        public int Id { get; set; }        
         public string CurrencyCode { get; set; }
         public string Rate { get; set; }
 
         //[ForeignKey("Date")]
-        
-               
+        public DateString UpdateDate { get; set; }
+
     }
     class Program
     {
@@ -110,8 +113,7 @@ namespace entityDBtest
             task.Wait();
             test.ToList();
             task = test.ToDB();
-            task.Wait();
-            Console.ReadLine();
+            task.Wait();            
         }
     }
 }

@@ -26,17 +26,38 @@ namespace entityDBtest.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("CurrencyCode")
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("Date")
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Rate")
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<string>("UpdateDateDate")
+                        .HasColumnType("nvarchar(10)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UpdateDateDate");
+
                     b.ToTable("Currency");
+                });
+
+            modelBuilder.Entity("entityDBtest.DateString", b =>
+                {
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Date");
+
+                    b.ToTable("DateString");
+                });
+
+            modelBuilder.Entity("entityDBtest.Currency", b =>
+                {
+                    b.HasOne("entityDBtest.DateString", "UpdateDate")
+                        .WithMany()
+                        .HasForeignKey("UpdateDateDate");
+
+                    b.Navigation("UpdateDate");
                 });
 #pragma warning restore 612, 618
         }

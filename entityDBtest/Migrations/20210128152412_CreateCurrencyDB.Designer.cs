@@ -9,7 +9,7 @@ using entityDBtest;
 namespace entityDBtest.Migrations
 {
     [DbContext(typeof(CurrencyContext))]
-    [Migration("20210128144014_CreateCurrencyDB")]
+    [Migration("20210128152412_CreateCurrencyDB")]
     partial class CreateCurrencyDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,15 +30,36 @@ namespace entityDBtest.Migrations
                     b.Property<string>("CurrencyCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Rate")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UpdateDateDate")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UpdateDateDate");
+
                     b.ToTable("Currency");
+                });
+
+            modelBuilder.Entity("entityDBtest.DateString", b =>
+                {
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Date");
+
+                    b.ToTable("DateString");
+                });
+
+            modelBuilder.Entity("entityDBtest.Currency", b =>
+                {
+                    b.HasOne("entityDBtest.DateString", "UpdateDate")
+                        .WithMany()
+                        .HasForeignKey("UpdateDateDate");
+
+                    b.Navigation("UpdateDate");
                 });
 #pragma warning restore 612, 618
         }
