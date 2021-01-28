@@ -47,7 +47,7 @@ namespace entityDBtest
                 CurrenciesList.Add(aCurrency);
             }
         }
-        public async Task ToDB()
+        public async Task RegisterToDb()
         {
             await using (var context = new CurrencyContext())
             {

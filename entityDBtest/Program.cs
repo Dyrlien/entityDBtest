@@ -18,7 +18,7 @@ namespace entityDBtest
             Task task = test.LoadCurrencies();
             task.Wait();
             test.ToList();
-            task = test.ToDB();
+            task = test.RegisterToDb();
             task.Wait();            
         }
     }
