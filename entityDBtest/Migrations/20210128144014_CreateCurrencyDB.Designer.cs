@@ -9,7 +9,7 @@ using entityDBtest;
 namespace entityDBtest.Migrations
 {
     [DbContext(typeof(CurrencyContext))]
-    [Migration("20210127174154_CreateCurrencyDB")]
+    [Migration("20210128144014_CreateCurrencyDB")]
     partial class CreateCurrencyDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,16 +22,21 @@ namespace entityDBtest.Migrations
 
             modelBuilder.Entity("entityDBtest.Currency", b =>
                 {
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("CurrencyCode")
-                        .HasColumnType("nvarchar(3)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Rate")
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Date");
+                    b.HasKey("Id");
 
                     b.ToTable("Currency");
                 });

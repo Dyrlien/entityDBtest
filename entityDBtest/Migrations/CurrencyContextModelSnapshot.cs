@@ -20,16 +20,21 @@ namespace entityDBtest.Migrations
 
             modelBuilder.Entity("entityDBtest.Currency", b =>
                 {
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
 
                     b.Property<string>("CurrencyCode")
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Date")
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Rate")
                         .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("Date");
+                    b.HasKey("Id");
 
                     b.ToTable("Currency");
                 });
