@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using entityDBtest.DAL;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace entityDBtest
         static void Main(string[] args)
         {
             ListCurrencies test = new ListCurrencies();
-            Task task = test.LoadCurrencies();
-            task.Wait();
+            
+            Task task1 = test.LoadCurrencies();
+            task1.Wait();
             test.ToList();
-            task = test.ToDB();
-            task.Wait();            
+            
+            
         }
     }
 }

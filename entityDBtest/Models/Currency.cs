@@ -10,8 +10,8 @@ namespace entityDBtest.Models
         [Key]
         public int Id { get; set; }
         public string CurrencyCode { get; set; }
-        public string Rate { get; set; }        
-        public DateString UpdateDate { get; set; }
+        public double Rate { get; set; }        
+        public DateString Updated { get; set; }
 
     }
 }
